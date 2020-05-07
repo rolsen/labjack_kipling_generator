@@ -4,6 +4,8 @@ set -e
 set -u
 set -x
 
+node --version
+
 # reset to first commit
 # git reset --hard 679672a92d2dcb3e47bcee2611c7714ef470bce9
 
@@ -26,50 +28,57 @@ git add .gitignore lerna.json package.json
 git commit -m 'Starting commit with lerna'
 
 MODULES=(
+    "kipling-cli"
+    "LabJack-nodejs"
+    "LabJack-process_manager"
     "ljm-ffi"
+    "ljmmm-parse"
     "ljswitchboard-builder"
     "ljswitchboard-core"
+    "ljswitchboard-data_parser"
+    "ljswitchboard-device_manager"
+    "ljswitchboard-device_scanner"
+    "ljswitchboard-firmware_verifier"
     "ljswitchboard-io_manager"
     "ljswitchboard-kipling"
-    "ljswitchboard-ljm_driver_checker"
-    "ljswitchboard-module_manager"
-    "ljswitchboard-static_files"
-    "LabJack-nodejs"
-    "ljswitchboard-data_parser"
-    "ljswitchboard-device_scanner"
     "ljswitchboard-kipling_tester"
     "ljswitchboard-ljm_device_curator"
+    "ljswitchboard-ljm_driver_checker"
     "ljswitchboard-ljm_driver_constants"
-    "LabJack-process_manager"
+    "ljswitchboard-ljm_special_addresses"
     "ljswitchboard-modbus_map"
+    "ljswitchboard-module_manager"
     "ljswitchboard-package_loader"
     "ljswitchboard-require"
-    "ljswitchboard-window_manager"
-    "ljswitchboard-splash_screen"
-    "ljmmm-parse"
-    "ljswitchboard-version_manager"
-    "ljswitchboard-firmware_verifier"
-    "ljswitchboard-simple_logger"
-    "ljm-shell_logger"
-    "kipling-cli"
     "ljswitchboard-server"
-    "ljswitchboard-electron_splash_screen"
-    "ljswitchboard-ljm_special_addresses"
-    "ljswitchboard-device_manager"
+    "ljswitchboard-splash_screen"
+    "ljswitchboard-static_files"
+    "ljswitchboard-version_manager"
+    "ljswitchboard-window_manager"
 )
 
-mkdir packages/
+# Omitted:
+#   ljswitchboard-electron_splash_screen
+#   ljswitchboard-simple_logger
+#   ljm-shell_logger
+#   The other new ones
+
 for modl in "${MODULES[@]}"; do
-    echo $modl
-    git subtree add -P "packages/${modl}" "../ljswitchboard-project_manager/${modl}" master
+    # This does preserve the commit info, though commits are ordered haphazardly.
+    lerna import "../ljswitchboard-project_manager/${modl}" --yes --preserve-commit --dest=. --flatten
+
+    # This doesn't preserve the commit information (for the sake of `git blame FILE`)
+    # git subtree add -P "${modl}" "~/Desktop/labjack/src/ljswitchboard-project_manager_backup/${modl}" master
 done
 
+# Something was messed up with ljswitchboard-device_scanner/package-lock.json.
+# https://github.com/npm/npm/issues/17340
+# I'm thinking removing all package-locks could be fine. Maybe something to
+# go back on if the build fails.
+# rm ljswitchboard-device_scanner/package-lock.json
+# find . -name 'package-lock.json' -exec rm {} \;
+
 echo
-# cpy()
-# {
-#     # echo "Copying ../ljswitchboard-project_manager/$1 to $2"
-#     cp "../ljswitchboard-project_manager/$1" "$2"
-# }
 
 cp ../ljswitchboard-project_manager/Gruntfile.js ./
 cp ../ljswitchboard-project_manager/.jshintignore ./

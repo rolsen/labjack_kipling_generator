@@ -31,6 +31,8 @@ MODULES=(
     "kipling-cli"
     "LabJack-nodejs"
     "LabJack-process_manager"
+    "lj-apps-win-registry-info"
+    "lj_async_0_to_x_shim"
     "ljm-ffi"
     "ljm-shell_logger"
     "ljmmm-parse"
@@ -39,16 +41,19 @@ MODULES=(
     "ljswitchboard-data_parser"
     "ljswitchboard-device_manager"
     "ljswitchboard-device_scanner"
+    "ljswitchboard-electron_splash_screen"
     "ljswitchboard-firmware_verifier"
     "ljswitchboard-io_manager"
     "ljswitchboard-kipling"
     "ljswitchboard-kipling_tester"
     "ljswitchboard-ljm_device_curator"
+    "ljswitchboard-ljm_device_manager"
     "ljswitchboard-ljm_driver_checker"
     "ljswitchboard-ljm_driver_constants"
     "ljswitchboard-ljm_special_addresses"
     "ljswitchboard-modbus_map"
     # "ljswitchboard-module_manager"
+    # "ljswitchboard-networking_tools"
     "ljswitchboard-package_loader"
     "ljswitchboard-require"
     "ljswitchboard-server"
@@ -71,9 +76,8 @@ for modl in "${MODULES[@]}"; do
 done
 
 # Not compatible with lerna import for some reason:
-# git subtree add -P "ljswitchboard-networking_tools" \
-#     "${origin_repo}/ljswitchboard-networking_tools" \
-#     master
+# ljswitchboard-networking_tools
+# ljswitchboard-networking_tools doesn't seem to be used anywhere
 git subtree add -P "ljswitchboard-module_manager" \
     "${origin_repo}/ljswitchboard-module_manager" \
     master
@@ -103,9 +107,9 @@ mkdir scripts/
 cp ../kip_gen/scripts/clean_temp_files.js scripts/
 cp ../kip_gen/scripts/run_built_k3.js scripts/
 
-mkdir scripts/lib/
-cp ../kip_gen/scripts/lib/run_multiple_commands.js scripts/lib/
-cp ../kip_gen/scripts/lib/submodule_commander.js scripts/lib/
+# mkdir scripts/lib/
+# cp ${origin_repo}/scripts/lib/run_multiple_commands.js scripts/lib/
+# cp ${origin_repo}/scripts/lib/submodule_commander.js scripts/lib/
 
 git add .
 git commit -m 'labjack_kipling: Added top-level resources.'
@@ -120,3 +124,5 @@ npm i q
 npm i async
 
 lerna bootstrap
+
+git commit -m 'Updated package-locks after initial `lerna bootstrap`.'

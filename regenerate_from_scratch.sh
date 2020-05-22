@@ -117,6 +117,6 @@ du -h -d 1
 echo
 
 npm i q
-npm i asyn
+npm i async
 
 lerna bootstrap

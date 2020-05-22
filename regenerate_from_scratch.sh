@@ -107,9 +107,9 @@ mkdir scripts/
 cp ../kip_gen/scripts/clean_temp_files.js scripts/
 cp ../kip_gen/scripts/run_built_k3.js scripts/
 
-# mkdir scripts/lib/
-# cp ${origin_repo}/scripts/lib/run_multiple_commands.js scripts/lib/
-# cp ${origin_repo}/scripts/lib/submodule_commander.js scripts/lib/
+mkdir scripts/lib/
+# cp ${origin_repo}/scripts/lib/run_multiple_commands.js scripts/lib/ # Not used anywhere
+cp ${origin_repo}/scripts/lib/submodule_commander.js scripts/lib/
 
 git add .
 git commit -m 'labjack_kipling: Added top-level resources.'

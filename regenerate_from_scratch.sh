@@ -32,6 +32,7 @@ MODULES=(
     "LabJack-nodejs"
     "LabJack-process_manager"
     "ljm-ffi"
+    "ljm-shell_logger"
     "ljmmm-parse"
     "ljswitchboard-builder"
     "ljswitchboard-core"
@@ -47,64 +48,67 @@ MODULES=(
     "ljswitchboard-ljm_driver_constants"
     "ljswitchboard-ljm_special_addresses"
     "ljswitchboard-modbus_map"
-    "ljswitchboard-module_manager"
+    # "ljswitchboard-module_manager"
     "ljswitchboard-package_loader"
     "ljswitchboard-require"
     "ljswitchboard-server"
+    "ljswitchboard-simple_logger"
     "ljswitchboard-splash_screen"
     "ljswitchboard-static_files"
     "ljswitchboard-version_manager"
     "ljswitchboard-window_manager"
 )
 
-# Omitted:
-#   ljswitchboard-electron_splash_screen
-#   ljswitchboard-simple_logger
-#   ljm-shell_logger
-#   The other new ones
-
+# origin_repo=/Users/Shared/src/ljswitchboard-project_manager
+origin_repo=/Users/rolsen/Desktop/labjack/src/ljswitchboard-project_manager_backup
+# origin_repo=/Users/rolsen/Desktop/labjack/src/ljswitchboard-project_manager
 for modl in "${MODULES[@]}"; do
     # This does preserve the commit info, though commits are ordered haphazardly.
-    lerna import "../ljswitchboard-project_manager/${modl}" --yes --preserve-commit --dest=. --flatten
+    lerna import "${origin_repo}/${modl}" --yes --preserve-commit --dest=. --flatten
 
     # This doesn't preserve the commit information (for the sake of `git blame FILE`)
-    # git subtree add -P "${modl}" "~/Desktop/labjack/src/ljswitchboard-project_manager_backup/${modl}" master
+    # git subtree add -P "${modl}" "${origin_repo}/${modl}" master
 done
+
+# Not compatible with lerna import for some reason:
+# git subtree add -P "ljswitchboard-networking_tools" \
+#     "${origin_repo}/ljswitchboard-networking_tools" \
+#     master
+git subtree add -P "ljswitchboard-module_manager" \
+    "${origin_repo}/ljswitchboard-module_manager" \
+    master
 
 # Something was messed up with ljswitchboard-device_scanner/package-lock.json.
 # https://github.com/npm/npm/issues/17340
 # I'm thinking removing all package-locks could be fine. Maybe something to
 # go back on if the build fails.
-# rm ljswitchboard-device_scanner/package-lock.json
+rm -f ljswitchboard-device_scanner/package-lock.json
 # find . -name 'package-lock.json' -exec rm {} \;
 
 echo
 
-cp ../ljswitchboard-project_manager/Gruntfile.js ./
-cp ../ljswitchboard-project_manager/.jshintignore ./
-cp ../ljswitchboard-project_manager/.jshintrc ./
-cp ../ljswitchboard-project_manager/README.md ./
-cp ../ljswitchboard-project_manager/bc_changes_and_notes.md ./
-cp ../ljswitchboard-project_manager/main.js ./
+cp ${origin_repo}/Gruntfile.js ./
+cp ${origin_repo}/.jshintignore ./
+cp ${origin_repo}/.jshintrc ./
+cp ${origin_repo}/kipling.sublime-project ./
+cp ${origin_repo}/main.js ./
+cp ../kip_gen/docs/README.md ./
 
 mkdir docs/
-cp ../ljswitchboard-project_manager/docs/commands.md docs/
-cp ../ljswitchboard-project_manager/docs/contributing.md docs/
-cp ../ljswitchboard-project_manager/docs/distribution.md docs/
-cp ../ljswitchboard-project_manager/docs/setup.md docs/
+cp ../kip_gen/docs/contributing.md docs/
+cp ../kip_gen/docs/distribution.md docs/
+cp ../kip_gen/docs/setup.md docs/
 
 mkdir scripts/
 cp ../kip_gen/scripts/clean_temp_files.js scripts/
-cp ../kip_gen/scripts/prep_and_build.js scripts/
-cp ../kip_gen/scripts/prep_build_and_run.js scripts/
-cp ../kip_gen/scripts/prep_for_dev.js scripts/
-cp ../kip_gen/scripts/prep_for_dist.js scripts/
 cp ../kip_gen/scripts/run_built_k3.js scripts/
-cp ../kip_gen/scripts/start_kipling.js scripts/
 
 mkdir scripts/lib/
 cp ../kip_gen/scripts/lib/run_multiple_commands.js scripts/lib/
 cp ../kip_gen/scripts/lib/submodule_commander.js scripts/lib/
+
+git add .
+git commit -m 'labjack_kipling: Added top-level resources.'
 
 echo
 
@@ -113,6 +117,6 @@ du -h -d 1
 echo
 
 npm i q
-npm i async
+npm i asyn
 
 lerna bootstrap

@@ -124,5 +124,5 @@ npm i q
 npm i async
 
 lerna bootstrap
-
+git add .
 git commit -m 'Updated package-locks after initial `lerna bootstrap`.'

@@ -94,9 +94,12 @@ echo
 cp ${origin_repo}/Gruntfile.js ./
 cp ${origin_repo}/.jshintignore ./
 cp ${origin_repo}/.jshintrc ./
+cp ../kip_gen/.eslintrc ./
+cp ../kip_gen/.eslintignore ./
 cp ${origin_repo}/kipling.sublime-project ./
 cp ${origin_repo}/main.js ./
 cp ../kip_gen/docs/README.md ./
+cp ../kip_gen/LICENSE ./
 
 mkdir docs/
 cp ../kip_gen/docs/contributing.md docs/
@@ -113,6 +116,15 @@ cp ${origin_repo}/scripts/lib/submodule_commander.js scripts/lib/
 
 git add .
 git commit -m 'labjack_kipling: Added top-level resources.'
+
+(
+    cd ljswitchboard-device_scanner &&
+    npm install ref &&
+    rm -rf node_modules
+)
+git add ljswitchboard-device_scanner/package.json
+git add ljswitchboard-device_scanner/package-lock.json
+git commit -m 'ljswitchboard-device_scanner: Adding ref dependency.'
 
 echo
 

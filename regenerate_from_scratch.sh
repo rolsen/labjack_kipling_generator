@@ -134,6 +134,7 @@ echo
 
 npm i q
 npm i async
+npm i
 
 lerna bootstrap
 git add .

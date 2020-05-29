@@ -94,9 +94,9 @@ echo
 cp ${origin_repo}/Gruntfile.js ./
 cp ${origin_repo}/.jshintignore ./
 cp ${origin_repo}/.jshintrc ./
-cp ../kip_gen/.eslintrc ./
+cp ../kip_gen/.eslintrc.js ./
 cp ../kip_gen/.eslintignore ./
-cp ${origin_repo}/kipling.sublime-project ./
+cp ../kip_gen/resources/kipling.sublime-project ./
 cp ${origin_repo}/main.js ./
 cp ../kip_gen/docs/README.md ./
 cp ../kip_gen/LICENSE ./

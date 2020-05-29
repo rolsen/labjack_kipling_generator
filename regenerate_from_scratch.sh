@@ -65,7 +65,7 @@ MODULES=(
 )
 
 # origin_repo=/Users/Shared/src/ljswitchboard-project_manager
-origin_repo=/Users/rolsen/Desktop/labjack/src/ljswitchboard-project_manager_backup
+origin_repo=/Users/rolsen/Desktop/labjack/src/ljswitchboard-project_manager_kip_gen
 # origin_repo=/Users/rolsen/Desktop/labjack/src/ljswitchboard-project_manager
 for modl in "${MODULES[@]}"; do
     # This does preserve the commit info, though commits are ordered haphazardly.
@@ -80,7 +80,7 @@ done
 # ljswitchboard-networking_tools doesn't seem to be used anywhere
 git subtree add -P "ljswitchboard-module_manager" \
     "${origin_repo}/ljswitchboard-module_manager" \
-    master
+    kip_gen
 
 # Something was messed up with ljswitchboard-device_scanner/package-lock.json.
 # https://github.com/npm/npm/issues/17340
@@ -109,9 +109,10 @@ cp ../kip_gen/docs/setup.md docs/
 mkdir scripts/
 cp ../kip_gen/scripts/clean_temp_files.js scripts/
 cp ../kip_gen/scripts/run_built_k3.js scripts/
+cp ../kip_gen/scripts/prep_build_and_run.js scripts/
 
 mkdir scripts/lib/
-# cp ${origin_repo}/scripts/lib/run_multiple_commands.js scripts/lib/ # Not used anywhere
+cp ${origin_repo}/scripts/lib/run_multiple_commands.js scripts/lib/
 cp ${origin_repo}/scripts/lib/submodule_commander.js scripts/lib/
 
 git add .
